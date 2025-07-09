@@ -126,9 +126,9 @@ app
   const newUsersData = userInfo.filter((item) => item.id != userId);
 
 
-  // console.log(userInfo.length);
+  console.log(userInfo.length);
 
-  // console.log(newUsersData.length);
+  console.log(newUsersData.length);
 
   fs.writeFile("./src/userInfo.json",JSON.stringify(newUsersData),(err,data)=>{
     if (err) {
