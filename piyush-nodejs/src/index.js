@@ -2,11 +2,8 @@ import express from "express";
 import userInfo from "./userInfo.json" with { type: "json" };
 import fs from "fs";
 import dotenv from "dotenv";
-
-dotenv.config({
-  path: "./env",
-});
-
+import mongoose from "mongoose"
+import { User } from "../src/models/user.models.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -15,110 +12,111 @@ app.listen(PORT, () => {
   console.log("Server is Listening on port : ", PORT);
 });
 
-app.get("/api/users",(req,res)=>{
-    return res.json(userInfo)
-})
 
-const htmlData = `
-    
-    ${
-    userInfo.map((user) => `
-      <p>
-        <span>
-        ${user.first_name} 
-        </span> <br>
 
-        <span>
-        ${user.email} 
-        </span> <br>
+dotenv.config({
+  path: "./env",
+});
 
-        <span>
-        ${user.phone} 
-        </span> <br>
 
-        <span>
-        ${user.city} 
-        </span>  <br> 
-      </p>
-    `
-    ).join("")
-    }
-    
-`
+// mongodb connection
 
-// middlewares
+mongoose
+.connect("mongodb://127.0.0.1:27017/youtube-app")
+.then(() => {console.log("MongoDB Connected !")})
+.catch(error => console.error(error))
+
+
+// middlewares plugin
 
 app.use(express.urlencoded({extended: false}))
 
 // it is example of SSR
-app.get("/users",(req,res)=>{
-  return res.send(htmlData)
+
+app
+.route("/api/users")
+.get( async (req,res)=>{
+
+
+  const dbAllUsers = await User.find({});
+
+  return res.status(200).json(dbAllUsers);
 })
+.post(async (req,res)=>{
 
-app.post("/api/users",(req,res)=>{
 
+  try {
+
+    // here X denote custom header
+  res.setHeader("X-MyName","Darshan Gujrati")
   const body = req.body;
-
-  if(!body || !body.name || !body.username || !body.email || !body.city || !body.phone || !body.website){
+  
+  if(!body || !body.fullName || !body.username || !body.email || !body.city || !body.gender || !body.phone || !body.website){
     return res.status(400).json({ status: "Failed", error_msg:"All Fields are Required!" })
   }
 
+  const result = await User.create({
+    fullName : body.fullName,
+    username : body.username,
+    email : body.email,
+    gender : body.gender,
+    city : body.city, 
+    phone : body.phone,
+    website : body.website
+  });
 
-  const newUserInfo = userInfo;
-  newUserInfo.push({ id: crypto.randomUUID(), ...body });
+  console.log(result);
 
-  const writeFileResp = fs.writeFile(
-    "./src/userInfo.json",
-    JSON.stringify(newUserInfo),
-    (err, data) => {
-      if (err) {
-        // console.log("File Append Error", err);
-        return res.json({ status: "Failed", error_type: err });
-      } else {
-        console.log("User Data Created Successfully !", data);
-        return res.status(201).json({
-          status: "Success",
-          message: "User Data Created Successfully !",
-        });
-      }
-    }
-  );
+  return res.status(201).json( {msg: "Success"})
+    
+  } catch (error) {
+    return res.status(404).json({ status:"Error",  type: error ,});
+    
+  }
 
   
 
-
 })
+
 
 
 app
 .route("/api/users/:id")
-.get((req,res)=>{  
-  const userId = Number(req.params.id);
-  const newUserInfo = userInfo;
-  const fetchUserData = newUserInfo.filter((item) => item.id == userId )
+.get( async (req,res)=>{  
+
+  try {
+
+    const fetchUserData = await User.findById(req.params.id);
+
+    if(!fetchUserData){
+      return res.status(404).json({msg : "User Not Found !"});
+    } 
+  
+    return res.status(200).json(fetchUserData);
+    
+  } catch (error) {
+    return res.status(404).json({ status:"Client Error",  type: error ,   msg : "User Not Found !"});
+  }
  
-  if(fetchUserData.length > 0) return res.json(fetchUserData)
-  else return res.status(404).json("User Data Not Found!") 
   
 })
-.patch((req,res)=>{  
-  const userId = Number(req.params.id);
-  const body = req.body;
-  const newUsersData = userInfo.map((item) => item.id == userId ? {id: userId, ...body} : item )
+.patch(async(req,res)=>{  
 
-    fs.writeFile("./src/userInfo.json",JSON.stringify(newUsersData),(err,data) => {
-      if (err) {
-        // console.log("File Append Error", err);
-        return res.json({ status: "Failed", error_type: err });
-      } else {
-        // console.log("User Data Updated Successfully !", data);
-        return res.json({
-          status: "Success",
-          message: "User Data Updated Successfully !",
-        });
-      }
-    })
+  try {
 
+    const UpdatedData =  await User.updateOne({ _id : req.params.id }, {  $set : { ...req.body }  } );
+ 
+    if(UpdatedData.modifiedCount !== 1){
+      return res.status(404).json({msg : "User Not Found ! "});
+    }
+  
+    return res.status(200).json({msg : "User Data Updated Successfully ! "});
+  
+  } catch (error) {
+    return res.status(404).json({ status:"Client Error",  type: error ,   msg : "User Not Found !"});
+  }
+
+ 
 
 })
 .delete((req,res)=>{  
