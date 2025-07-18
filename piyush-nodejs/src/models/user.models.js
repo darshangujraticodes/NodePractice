@@ -39,6 +39,14 @@ const userSchema = new mongoose.Schema(
     website: {
       type: String,
     },
+    password: {
+      type: String,
+      required: true,
+      match: [
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+        "Please enter a valid Password",
+      ],
+    },
   },
   { timestamps: true }
 );

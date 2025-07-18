@@ -6,6 +6,7 @@ import {
   handleGetUserById,
   handleUpdateUserById,
   handleDeleteUserById,
+  handleUserLogin,
 } from "../controllers/user.controller.js";
 
 const userRouter = express.Router();
@@ -17,5 +18,7 @@ userRouter
   .get(handleGetUserById)
   .patch(handleUpdateUserById)
   .delete(handleDeleteUserById);
+
+userRouter.post("/login", handleUserLogin);
 
 export default userRouter;

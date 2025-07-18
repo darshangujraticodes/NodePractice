@@ -1,4 +1,5 @@
 import { User } from "../models/user.models.js";
+import { setUser } from "../service/auth.js";
 
 export async function handleGetAllUsers(req, res) {
   try {
@@ -103,5 +104,37 @@ export async function handleDeleteUserById(req, res) {
     return res
       .status(404)
       .json({ status: "Client Error", type: error, msg: "User Not Found !" });
+  }
+}
+
+export async function handleUserLogin(req, res) {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email, password });
+
+    // console.log(user);
+
+    if (!user) {
+      return res.render("login", {
+        error: "Invalid Username or Password!",
+      });
+    }
+
+    const token = setUser(user);
+
+    // console.log("setuser token", token);
+
+    res.cookie("uid", token);
+
+    // console.log("cookie created!!");
+
+    return res.redirect("/");
+  } catch (error) {
+    // return res
+    //   .status(404)
+    //   .json({ status: "Client Error", type: error, msg: "User Not Found !" });
+
+    return res.redirect("/login");
   }
 }
