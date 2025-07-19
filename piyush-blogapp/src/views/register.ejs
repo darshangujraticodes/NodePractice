@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Blogify | Register Page</title>
+    <meta name="description" content="Blogify - Personal Blog App" />
+
+    <%- include('./partials/head') %>
+  </head>
+  <body>
+    <header><%- include('./partials/navbar') %></header>
+    <main>
+      <section class="pt-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h1 class="text-center mb-4">Register Page</h1>
+            </div>
+            <div class="offset-md-4 col-4">
+              <div class="formBoxWrap">
+                <form action="/user/register" method="post">
+                  <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      class="form-control"
+                      id="fullName"
+                      aria-describedby="fullName"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      name="email"
+                      id="email"
+                      aria-describedby="email"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      aria-describedby="password"
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer></footer>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
