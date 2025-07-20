@@ -12,6 +12,10 @@ userRouter
   })
   .post(handleUserLogin);
 
+userRouter.route("/logout").get((req, res) => {
+  res.clearCookie("userToken").redirect("/");
+});
+
 userRouter
   .route("/register")
   .get((req, res) => {

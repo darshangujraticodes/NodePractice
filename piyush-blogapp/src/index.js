@@ -2,6 +2,11 @@ const path = require("path");
 const express = require("express");
 const userRouter = require("./routes/user.routes.js");
 const connectMongoDb = require("./connection/connection.js");
+const cookieParser = require("cookie-parser");
+const {
+  checkForUserCookieAuthentication,
+} = require("./middlewares/userCookieAuthentication.js");
+const blogRouter = require("./routes/blog.routes.js");
 
 const app = express();
 const PORT = 8000;
@@ -24,12 +29,19 @@ app.listen(PORT, () => {
 });
 
 // middleware
+
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(checkForUserCookieAuthentication("userToken"));
 
 // routes
 
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", {
+    // req.user value is fetch from checkForUserCookieAuthentication() middleware
+    user: req.user,
+  });
 });
 
 app.use("/user", userRouter);
+app.use("/blog", blogRouter);

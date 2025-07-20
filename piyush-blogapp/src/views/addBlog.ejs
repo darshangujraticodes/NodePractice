@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Blogify - Personal Blog App</title>
+    <meta name="description" content="Blogify - Personal Blog App" />
+
+    <%- include('./partials/head') %>
+  </head>
+  <body>
+    <header><%- include('./partials/navbar') %></header>
+    <main>
+      <section class="pt-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h1 class="text-center">Add Your Blog Details</h1>
+            </div>
+            <div class="col-12">
+              <div class="addBlogFormBoxWrap">
+                <form action="/blog/create-new-blog" method="post">
+                  <div class="mb-3">
+                    <label for="coverImage" class="form-label"
+                      >Blog Cover Image</label
+                    >
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="coverImage"
+                      name="coverImage"
+                      aria-describedby="coverImage"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="title" class="form-label">Blog Title</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="title"
+                      name="title"
+                      aria-describedby="title"
+                      placeholder="Title..."
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="mainContent" class="form-label"
+                      >Blog Content Description</label
+                    >
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="mainContent"
+                      name="mainContent"
+                      placeholder="Description..."
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="reset" class="btn btn-danger">Reset</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer></footer>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
