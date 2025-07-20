@@ -5,10 +5,18 @@
     <meta name="description" content="Blogify - Personal Blog App" />
 
     <%- include('./partials/head') %>
+
+    <style>
+      .profileIcon {
+        width: 30px;
+        height: 30px;
+      }
+    </style>
   </head>
   <body>
     <header>
-      <%- include('./partials/navbar') %> <%= JSON.stringify(user) %>
+      <%- include('./partials/navbar') %>
+      <!-- <%= JSON.stringify(user) %> -->
     </header>
     <main>
       <section class="pt-4">
@@ -17,6 +25,32 @@
             <div class="col-12">
               <h1 class="text-center">Home Page</h1>
             </div>
+            <div class="col-12">
+              <% if (locals.blogFetchError) { %>
+              <div class="alert alert-danger" role="alert">
+                <%= locals.blogFetchError %>
+              </div>
+              <% } %>
+            </div>
+
+            <% blogs.forEach(blog => { %>
+            <div class="col-md-3">
+              <div class="card" style="width: 18rem">
+                <img
+                  src="<%= blog.coverImage %>"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h5 class="card-title"><%= blog.title %></h5>
+
+                  <a href="<%=  blog.url  %>" class="btn btn-primary"
+                    >Read More</a
+                  >
+                </div>
+              </div>
+            </div>
+            <% }) %>
           </div>
         </div>
       </section>

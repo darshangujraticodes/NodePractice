@@ -8,6 +8,8 @@ const {
 } = require("./middlewares/userCookieAuthentication.js");
 const blogRouter = require("./routes/blog.routes.js");
 
+const Blog = require("./models/blog.models.js");
+
 const app = express();
 const PORT = 8000;
 
@@ -34,13 +36,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(checkForUserCookieAuthentication("userToken"));
 
+app.use(express.static(path.resolve("./public")));
+
 // routes
 
-app.get("/", (req, res) => {
-  res.render("home", {
-    // req.user value is fetch from checkForUserCookieAuthentication() middleware
-    user: req.user,
-  });
+app.get("/", async (req, res) => {
+  try {
+    const allBlogs = await Blog.find({}).sort({ createdAt: -1 });
+
+    console.log(allBlogs);
+
+    return res.render("home", {
+      // req.user value is fetch from checkForUserCookieAuthentication() middleware
+      user: req.user,
+      blogs: allBlogs,
+    });
+  } catch (error) {
+    console.log("Home page Blog fetch error = ", error);
+    return res.status(201).render("home", {
+      // req.user value is fetch from checkForUserCookieAuthentication() middleware
+      user: req.user,
+      blogFetchError: "Blogs are not found in the database!",
+    });
+  }
 });
 
 app.use("/user", userRouter);

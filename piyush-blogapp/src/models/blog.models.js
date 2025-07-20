@@ -11,9 +11,14 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    blogThumbnail: {
+    coverImage: {
       type: String,
       default: "images/defaultBlogThumbnail.jpg",
+    },
+    url: {
+      type: String,
+      required: true,
+      unique: true,
     },
     metaTitle: {
       type: String,
@@ -24,7 +29,7 @@ const blogSchema = new mongoose.Schema(
     keyword: {
       type: String,
     },
-    createBy: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

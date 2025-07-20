@@ -4,6 +4,19 @@ const {
   handleUserLogin,
 } = require("../controllers/user.controllers");
 const userRouter = express.Router();
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.resolve("./public/uploads/"));
+  },
+  filename: function (req, file, cb) {
+    const fileName = `${Date.now()}-${file.originalname}`;
+    cb(null, fileName);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 userRouter
   .route("/login")
@@ -21,6 +34,6 @@ userRouter
   .get((req, res) => {
     return res.render("register");
   })
-  .post(handleUserRegistration);
+  .post(upload.single("profileImage"), handleUserRegistration);
 
 module.exports = userRouter;

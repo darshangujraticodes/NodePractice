@@ -17,7 +17,25 @@
             </div>
             <div class="offset-lg-4 col-lg-5">
               <div class="formBoxWrap">
-                <form action="/user/register" method="post">
+                <form
+                  action="/user/register"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <div class="mb-3">
+                    <label for="profileImage" class="form-label"
+                      >User Profile Image</label
+                    >
+                    <input
+                      type="text"
+                      name="profileImage"
+                      class="form-control"
+                      id="profileImage"
+                      aria-describedby="profileImage"
+                      required
+                    />
+                  </div>
+
                   <div class="mb-3">
                     <label for="fullName" class="form-label">Full Name</label>
                     <input

@@ -17,7 +17,11 @@
             </div>
             <div class="col-12">
               <div class="addBlogFormBoxWrap">
-                <form action="/blog/create-new-blog" method="post">
+                <form
+                  action="/blog/create-new-blog"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
                   <div class="mb-3">
                     <label for="coverImage" class="form-label"
                       >Blog Cover Image</label
@@ -40,19 +44,21 @@
                       name="title"
                       aria-describedby="title"
                       placeholder="Title..."
+                      required
                     />
                   </div>
 
                   <div class="mb-3">
-                    <label for="mainContent" class="form-label"
+                    <label for="body" class="form-label"
                       >Blog Content Description</label
                     >
                     <textarea
                       type="text"
                       class="form-control"
-                      id="mainContent"
-                      name="mainContent"
+                      id="body"
+                      name="body"
                       placeholder="Description..."
+                      required
                     ></textarea>
                   </div>
                   <button type="submit" class="btn btn-primary">Submit</button>

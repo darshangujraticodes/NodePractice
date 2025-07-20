@@ -2,6 +2,13 @@ const User = require("../models/user.models.js");
 const { createTokenForUser } = require("../utils/authentication.js");
 
 async function handleUserRegistration(req, res) {
+  let profileImagePath;
+  if (!req.file) {
+    profileImagePath = "/images/defaultBlogThumbnail.jpg";
+  } else {
+    profileImagePath = `/uploads/${req.file.filename}`;
+  }
+
   try {
     const { fullName, email, password } = req.body;
 
@@ -9,6 +16,7 @@ async function handleUserRegistration(req, res) {
       fullName,
       email,
       password,
+      profileImageURL: profileImagePath,
     });
 
     // console.log(dbResp);
