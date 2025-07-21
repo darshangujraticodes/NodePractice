@@ -34,7 +34,7 @@ async function handleUserLogin(req, res) {
     const { email, password } = req.body;
 
     const user = await User.matchPassword(email, password);
-    console.log("User controller | fetch user = ", user);
+    // console.log("User controller | fetch user = ", user);
 
     if (!user || !user.fullName) {
       // Login failed
@@ -44,7 +44,7 @@ async function handleUserLogin(req, res) {
     }
 
     const token = createTokenForUser(user);
-    console.log("User controller | createTokenForUser : ", token);
+    // console.log("User controller | createTokenForUser : ", token);
 
     res.cookie("userToken", token, {
       httpOnly: true,

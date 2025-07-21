@@ -26,7 +26,7 @@ async function handleBlogCreation(req, res) {
       coverImage: coverImgPath,
     });
 
-    return res.status(201).redirect("/");
+    return res.status(201).redirect(`/blog/${blogURL}`);
   } catch (error) {
     console.log("handleBlogCreation | Error", error.message);
   }
@@ -34,6 +34,22 @@ async function handleBlogCreation(req, res) {
   return res.render("addBlog");
 }
 
+async function handleUrlBlogDisplay(req, res) {
+  try {
+    const blog = await Blog.find({ url: req.params.url });
+
+    // console.log("Individual Blog Display", blog, req.user);
+
+    return res.render("blog", {
+      user: req.user,
+      blog: blog[0],
+    });
+  } catch (error) {
+    console.log("handleUrlBlogDisplay | ", error);
+  }
+}
+
 module.exports = {
   handleBlogCreation,
+  handleUrlBlogDisplay,
 };

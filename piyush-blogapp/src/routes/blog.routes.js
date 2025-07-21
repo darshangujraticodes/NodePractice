@@ -2,7 +2,11 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 
-const { handleBlogCreation } = require("../controllers/blog.controllers");
+const {
+  handleBlogCreation,
+  handleToFetchIdBlog,
+  handleUrlBlogDisplay,
+} = require("../controllers/blog.controllers");
 
 const blogRouter = express.Router();
 
@@ -17,6 +21,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+blogRouter.route("/display/:url").get(handleUrlBlogDisplay);
 
 blogRouter
   .route("/create-new-blog")

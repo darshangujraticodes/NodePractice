@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= blog.title %></title>
+    <meta name="description" content="Blogify - Personal Blog App" />
+
+    <%- include('./partials/head') %>
+
+    <style>
+      .profileIcon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .blogContentWrap {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .blogImgWrap {
+        display: flex;
+        justify-content: center;
+        margin: 35px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header><%- include('./partials/navbar') %></header>
+    <main>
+      <section class="pt-4">
+        <!-- <p><%= JSON.stringify(blog) %></p> -->
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="blogContentWrap">
+                <div>
+                  <h1 class="text-center"><%= blog.title %></h1>
+                </div>
+                <div class="blogImgWrap">
+                  <img src="<%= blog.coverImage %>" class="img-fluid" alt="" />
+                </div>
+                <div>
+                  <p><%= blog.body %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer></footer>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>

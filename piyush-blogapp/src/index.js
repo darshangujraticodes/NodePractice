@@ -44,7 +44,7 @@ app.get("/", async (req, res) => {
   try {
     const allBlogs = await Blog.find({}).sort({ createdAt: -1 });
 
-    console.log(allBlogs);
+    // console.log(allBlogs);
 
     return res.render("home", {
       // req.user value is fetch from checkForUserCookieAuthentication() middleware
